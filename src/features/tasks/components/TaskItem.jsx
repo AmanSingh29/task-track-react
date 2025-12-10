@@ -1,21 +1,45 @@
-// src/features/tasks/components/TaskItem.jsx
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleComplete, deleteTask, updateTask } from "../tasksSlice";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 export default function TaskItem({ task }) {
   const dispatch = useDispatch();
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(task.title);
 
-  function handleToggle() {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: task.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 999 : "auto",
+    touchAction: "none",
+  };
+
+  function handleToggle(e) {
+    e.stopPropagation();
     dispatch(toggleComplete(task.id));
   }
 
-  function handleDelete() {
+  function handleDelete(e) {
+    e.stopPropagation();
     if (confirm("Delete this task?")) {
       dispatch(deleteTask(task.id));
     }
+  }
+
+  function handleEditClick(e) {
+    e.stopPropagation();
+    setEditing((prev) => !prev);
   }
 
   function saveEdit() {
@@ -35,21 +59,41 @@ export default function TaskItem({ task }) {
     : "text-gray-900";
 
   return (
-    <li className="flex items-center justify-between p-3 bg-white border rounded shadow-sm">
+    <li
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`flex items-center justify-between p-3 bg-white border rounded shadow-sm cursor-grab active:cursor-grabbing ${
+        isDragging ? "opacity-90 shadow-lg" : ""
+      }`}
+    >
       <div className="flex items-center gap-3">
         <input
           type="checkbox"
           checked={task.completed}
           onChange={handleToggle}
+          onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+          aria-label={`Mark ${task.title} as ${
+            task.completed ? "incomplete" : "complete"
+          }`}
+          className="cursor-pointer"
         />
+
         <div>
           {editing ? (
             <input
-              className="p-1 border rounded"
+              className="p-1 border rounded cursor-text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               onBlur={saveEdit}
               onKeyDown={(e) => e.key === "Enter" && saveEdit()}
+              onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              autoFocus
             />
           ) : (
             <div className="flex items-center gap-2">
@@ -69,14 +113,18 @@ export default function TaskItem({ task }) {
 
       <div className="flex items-center gap-2">
         <button
-          className="px-2 py-1 text-sm border rounded"
-          onClick={() => setEditing((e) => !e)}
+          className="px-2 py-1 text-sm border rounded cursor-pointer hover:bg-gray-50"
+          onClick={handleEditClick}
+          onPointerDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
         >
           {editing ? "Cancel" : "Edit"}
         </button>
         <button
-          className="px-2 py-1 text-sm bg-red-600 text-white rounded"
+          className="px-2 py-1 text-sm bg-red-600 text-white rounded cursor-pointer hover:bg-red-700"
           onClick={handleDelete}
+          onPointerDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
         >
           Delete
         </button>
