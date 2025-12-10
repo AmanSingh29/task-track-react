@@ -17,7 +17,6 @@ export default function TaskEditor() {
     const task = {
       id,
       title: title.trim(),
-      description: "",
       completed: false,
       priority,
       categories: category ? [category] : [],
@@ -28,7 +27,6 @@ export default function TaskEditor() {
     dispatch(addTask(task));
     setTitle("");
     setCategory("");
-    setPriority("medium");
   }
 
   return (

@@ -37,11 +37,6 @@ export default function TaskItem({ task }) {
     }
   }
 
-  function handleEditClick(e) {
-    e.stopPropagation();
-    setEditing((prev) => !prev);
-  }
-
   function saveEdit() {
     if (!title.trim()) return;
     dispatch(updateTask({ id: task.id, changes: { title: title.trim() } }));
@@ -74,6 +69,7 @@ export default function TaskItem({ task }) {
         isDragging ? "opacity-60 shadow-2xl scale-105 rotate-2" : ""
       } ${task.completed ? "bg-gray-50" : ""}`}
     >
+      {`${editing}`}
       <div className="flex items-start gap-3 flex-1 min-w-0">
         <div className="shrink-0 pt-1">
           <input
@@ -147,11 +143,17 @@ export default function TaskItem({ task }) {
       <div className="flex items-center gap-2 shrink-0 ml-auto sm:ml-0">
         <button
           className="px-3 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
-          onClick={handleEditClick}
-          onPointerDown={(e) => e.stopPropagation()}
-          onTouchStart={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.preventDefault()}
+          onTouchStart={(e) => e.preventDefault()}
+          onClick={(e) => {
+            if (editing) {
+              saveEdit();
+            } else {
+              setEditing(true);
+            }
+          }}
         >
-          {editing ? "Cancel" : "Edit"}
+          {editing ? "Save" : "Edit"}
         </button>
         <button
           className="px-3 py-1.5 text-xs sm:text-sm font-medium text-white bg-red-600 border border-red-600 rounded-lg cursor-pointer hover:bg-red-700 hover:border-red-700 active:bg-red-800 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"

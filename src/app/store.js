@@ -3,7 +3,7 @@ import tasksReducer from "../features/tasks/tasksSlice";
 
 function loadFromLocalStorage() {
   try {
-    const s = localStorage.getItem("tasks_v1");
+    const s = localStorage.getItem("tasks");
     return s ? JSON.parse(s) : undefined;
   } catch (e) {
     console.warn("Failed to load from localStorage", e);
@@ -25,7 +25,7 @@ export const store = configureStore({
 store.subscribe(() => {
   try {
     const state = store.getState();
-    localStorage.setItem("tasks_v1", JSON.stringify(state.tasks));
+    localStorage.setItem("tasks", JSON.stringify(state.tasks));
   } catch (e) {
     console.warn("Failed to save to localStorage", e);
   }
