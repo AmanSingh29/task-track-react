@@ -1,4 +1,3 @@
-import React, { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import TaskItem from "./TaskItem";
 import {
@@ -57,13 +56,30 @@ export default function TaskList() {
   const tasks = useSelector(selectFilteredTasks);
   const allIds = tasks.map((t) => t.id);
 
+  const triggerHaptic = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  };
+
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }), // fine for mouse
-    useSensor(TouchSensor, {
-      activationConstraint: { delay: 180, tolerance: 5 },
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
     }),
+
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 400,
+        tolerance: 8, 
+      },
+    }),
+
     useSensor(KeyboardSensor)
   );
+
+  function handleDragStart(event) {
+    triggerHaptic();
+  }
 
   function handleDragEnd(event) {
     const { active, over } = event;
@@ -75,12 +91,18 @@ export default function TaskList() {
 
     const newOrder = arrayMove(allIds, oldIndex, newIndex);
     dispatch(reorderTasks(newOrder));
+
+    if (navigator.vibrate) {
+      navigator.vibrate(30);
+    }
   }
 
   if (!tasks || tasks.length === 0) {
     return (
-      <div className="text-gray-500 py-6">
-        No tasks found. Add your first task above.
+      <div className="text-center text-gray-500 py-12">
+        <div className="text-5xl mb-4">📝</div>
+        <p className="text-lg font-medium">No tasks found</p>
+        <p className="text-sm mt-2">Add your first task above to get started</p>
       </div>
     );
   }
@@ -89,10 +111,11 @@ export default function TaskList() {
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={allIds} strategy={verticalListSortingStrategy}>
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {tasks.map((task) => (
             <TaskItem key={task.id} task={task} />
           ))}

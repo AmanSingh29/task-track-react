@@ -48,15 +48,21 @@ export default function TaskItem({ task }) {
     setEditing(false);
   }
 
-  const priorityClass =
-    task.priority === "high"
-      ? "text-red-600"
-      : task.priority === "low"
-      ? "text-green-600"
-      : "text-yellow-600";
+  const priorityColors = {
+    high: "bg-red-50 text-red-700 border-red-200",
+    medium: "bg-amber-50 text-amber-700 border-amber-200",
+    low: "bg-green-50 text-green-700 border-green-200",
+  };
+
+  const priorityDots = {
+    high: "bg-red-500",
+    medium: "bg-amber-500",
+    low: "bg-green-500",
+  };
+
   const titleClass = task.completed
     ? "line-through text-gray-400"
-    : "text-gray-900";
+    : "text-gray-800";
 
   return (
     <li
@@ -64,28 +70,30 @@ export default function TaskItem({ task }) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`flex items-center justify-between p-3 bg-white border rounded shadow-sm cursor-grab active:cursor-grabbing ${
-        isDragging ? "opacity-90 shadow-lg" : ""
-      }`}
+      className={`group relative flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-white border border-gray-200 rounded-lg transition-all duration-200 cursor-grab active:cursor-grabbing hover:border-blue-300 hover:shadow-md ${
+        isDragging ? "opacity-60 shadow-2xl scale-105 rotate-2" : ""
+      } ${task.completed ? "bg-gray-50" : ""}`}
     >
-      <div className="flex items-center gap-3">
-        <input
-          type="checkbox"
-          checked={task.completed}
-          onChange={handleToggle}
-          onClick={(e) => e.stopPropagation()}
-          onPointerDown={(e) => e.stopPropagation()}
-          onTouchStart={(e) => e.stopPropagation()}
-          aria-label={`Mark ${task.title} as ${
-            task.completed ? "incomplete" : "complete"
-          }`}
-          className="cursor-pointer"
-        />
+      <div className="flex items-start gap-3 flex-1 min-w-0">
+        <div className="shrink-0 pt-1">
+          <input
+            type="checkbox"
+            checked={task.completed}
+            onChange={handleToggle}
+            onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            className="w-5 h-5 rounded border-2 border-gray-300 text-blue-600 cursor-pointer focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-all"
+            aria-label={`Mark ${task.title} as ${
+              task.completed ? "incomplete" : "complete"
+            }`}
+          />
+        </div>
 
-        <div>
+        <div className="flex-1 min-w-0">
           {editing ? (
             <input
-              className="p-1 border rounded cursor-text"
+              className="w-full px-3 py-2 border-2 border-blue-400 rounded-lg cursor-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               onBlur={saveEdit}
@@ -96,24 +104,49 @@ export default function TaskItem({ task }) {
               autoFocus
             />
           ) : (
-            <div className="flex items-center gap-2">
-              <span className={`font-medium ${titleClass}`}>{task.title}</span>
-              <span className={`text-xs ${priorityClass} ml-2`}>
-                ● {task.priority}
-              </span>
-            </div>
-          )}
-          {task.categories && task.categories.length > 0 && (
-            <div className="text-xs text-gray-500">
-              {task.categories.join(", ")}
-            </div>
+            <>
+              <div className="flex items-start gap-2 flex-wrap">
+                <span
+                  className={`font-medium text-sm sm:text-base wrap-break-word ${titleClass}`}
+                  style={{ wordBreak: "break-word" }}
+                >
+                  {task.title}
+                </span>
+
+                <span
+                  className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium border shrink-0 ${
+                    priorityColors[task.priority]
+                  }`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      priorityDots[task.priority]
+                    }`}
+                  ></span>
+                  {task.priority}
+                </span>
+              </div>
+
+              {task.categories && task.categories.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {task.categories.map((cat) => (
+                    <span
+                      key={cat}
+                      className="inline-block px-2 py-0.5 text-xs bg-blue-50 text-blue-700 rounded border border-blue-200"
+                    >
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 shrink-0 ml-auto sm:ml-0">
         <button
-          className="px-2 py-1 text-sm border rounded cursor-pointer hover:bg-gray-50"
+          className="px-3 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
           onClick={handleEditClick}
           onPointerDown={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
@@ -121,7 +154,7 @@ export default function TaskItem({ task }) {
           {editing ? "Cancel" : "Edit"}
         </button>
         <button
-          className="px-2 py-1 text-sm bg-red-600 text-white rounded cursor-pointer hover:bg-red-700"
+          className="px-3 py-1.5 text-xs sm:text-sm font-medium text-white bg-red-600 border border-red-600 rounded-lg cursor-pointer hover:bg-red-700 hover:border-red-700 active:bg-red-800 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
           onClick={handleDelete}
           onPointerDown={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
@@ -129,6 +162,8 @@ export default function TaskItem({ task }) {
           Delete
         </button>
       </div>
+
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gray-300 rounded-r opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
     </li>
   );
 }
