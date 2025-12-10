@@ -22,7 +22,7 @@ export default function TaskItem({ task }) {
     transform: CSS.Transform.toString(transform),
     transition,
     zIndex: isDragging ? 999 : "auto",
-    touchAction: "none",
+    touchAction: "pan-y",
   };
 
   function handleToggle(e) {

@@ -63,23 +63,19 @@ export default function TaskList() {
   };
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: { distance: 8 },
-    }),
-
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 400,
+        delay: 300,
         tolerance: 8, 
       },
     }),
 
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
+    }),
+
     useSensor(KeyboardSensor)
   );
-
-  function handleDragStart(event) {
-    triggerHaptic();
-  }
 
   function handleDragEnd(event) {
     const { active, over } = event;
@@ -111,7 +107,6 @@ export default function TaskList() {
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={allIds} strategy={verticalListSortingStrategy}>

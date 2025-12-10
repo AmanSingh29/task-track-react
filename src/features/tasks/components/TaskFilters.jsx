@@ -1,5 +1,3 @@
-// src/features/tasks/components/TaskFilters.jsx
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "../tasksSlice";
 
@@ -7,8 +5,8 @@ export default function TaskFilters() {
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.tasks.filter);
 
-  function setStatus(s) {
-    dispatch(setFilter({ status: s }));
+  function setStatus(status) {
+    dispatch(setFilter({ status }));
   }
 
   return (

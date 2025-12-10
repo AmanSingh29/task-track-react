@@ -1,4 +1,3 @@
-// src/features/tasks/components/TaskEditor.jsx
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTask } from "../tasksSlice";
