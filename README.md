@@ -57,7 +57,7 @@ Hosted on **Netlify**.
 
 ### 1️⃣ Clone this repository
 ```bash
-git clone https://github.com/your-username/task-tracker.git
+git clone https://github.com/AmanSingh29/task-track-react.git
 cd task-tracker
 ```
 
@@ -118,30 +118,3 @@ Choose between:
 - Data is restored when you reopen the app  
 
 ---
-
-## 🌍 Deployment (Netlify)
-
-This project is deployed on Netlify:  
-👉 **https://task-track-fe.netlify.app/**
-
-To deploy your own version:
-
-1. Push your project to GitHub  
-2. Open Netlify → “New Site from Git”  
-3. Connect your repository  
-4. Set build command:
-```
-npm run build
-```
-5. Set publish directory:
-```
-dist
-```
-6. Deploy 🚀
-
----
-
-## 🤝 Contributing
-
-Contributions & suggestions are welcome!  
-Feel free to open issues or create pull requests!
