@@ -1,16 +1,147 @@
-# React + Vite
+# 📝 Task Tracker — React + Redux (Drag & Drop, Filters, Persistence)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive, feature-rich **Task Management Application** built using **React, Redux Toolkit, dnd-kit, TailwindCSS**, and **localStorage persistence**.  
+Users can create, edit, organize, reorder, search, and categorize tasks with a clean UI and smooth drag-and-drop experience.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Demo
 
-## React Compiler
+👉 **Live App:** https://task-track-fe.netlify.app/  
+Hosted on **Netlify**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📌 Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### ✅ Core Features
+- Add, edit, delete tasks  
+- Mark tasks as complete/incomplete  
+- Search tasks  
+- Filter by status (All / Active / Completed)  
+- Add tags/categories  
+- Priority levels (High / Medium / Low)  
+- Mobile-first responsive UI  
+
+### 🎯 Advanced Features
+- Smooth drag & drop using **dnd-kit**  
+- Long-press drag for mobile  
+- Haptic feedback (supported devices)  
+- Priority badges & category tags  
+- Clean animations & transitions  
+- Auto-save to **localStorage**  
+- State restored on app load  
+
+### 🧠 State Management
+- Built using **Redux Toolkit slices**  
+- Centralized global state  
+- Memoized filtering logic  
+- Predictable and scalable architecture  
+
+---
+
+## 🛠️ Tech Stack
+
+| Feature | Technology |
+|--------|------------|
+| Frontend Framework | React (Vite) |
+| State Management | Redux Toolkit |
+| Drag & Drop | dnd-kit |
+| Styling | Tailwind CSS |
+| Storage | localStorage |
+| Deployment | Netlify |
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone this repository
+```bash
+git clone https://github.com/your-username/task-tracker.git
+cd task-tracker
+```
+
+### 2️⃣ Install dependencies
+```bash
+npm install
+```
+
+### 3️⃣ Run the development server
+```bash
+npm run dev
+```
+
+Your app will now be available at:  
+👉 **http://localhost:5173/**
+
+---
+
+## 📘 How to Use the App
+
+### ➕ Adding a Task
+- Enter a task title  
+- Select priority level  
+- Optionally add a category tag  
+- Click **Add**
+
+### ✏ Editing a Task
+- Click **Edit**  
+- Modify the text  
+- Click **Save**
+
+### ☑ Mark Complete / Incomplete
+- Use the task checkbox
+
+### 🗑 Deleting a Task
+- Press **Delete** on any task
+
+### 🔍 Searching Tasks
+- Use the search bar to filter tasks instantly
+
+### 🎛 Filtering Tasks
+Choose between:
+- **All**
+- **Active**
+- **Completed**
+
+### 🏷 Category Tags
+- Each task can have multiple categories  
+- Categories help group similar tasks
+
+### 🔄 Drag & Drop Reordering
+- **Desktop:** Drag anywhere on a task  
+- **Mobile:** Long press → drag  
+- Smooth animations + vibration feedback
+
+### 💾 Persistent Storage
+- All tasks are saved automatically  
+- Data is restored when you reopen the app  
+
+---
+
+## 🌍 Deployment (Netlify)
+
+This project is deployed on Netlify:  
+👉 **https://task-track-fe.netlify.app/**
+
+To deploy your own version:
+
+1. Push your project to GitHub  
+2. Open Netlify → “New Site from Git”  
+3. Connect your repository  
+4. Set build command:
+```
+npm run build
+```
+5. Set publish directory:
+```
+dist
+```
+6. Deploy 🚀
+
+---
+
+## 🤝 Contributing
+
+Contributions & suggestions are welcome!  
+Feel free to open issues or create pull requests!
